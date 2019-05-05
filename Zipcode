@@ -1,0 +1,45 @@
+install.packages('noncensus')
+require(noncensus)
+require(rgdal)
+library(plyr)
+
+illinois<-readOGR(dsn="C:/Users/Nathan/Desktop/Gopher/Presence_Only_shapefiles",layer="IL_BNDY_County_Py")
+Prom_zip<-read.csv(choose.files())
+Prom_zipcode<-data.frame(Prom_zip$Zip.Code.)
+head(Prom_zipcode)
+data(zip_codes)
+
+head(zip_codes)
+data(counties)
+head(counties)
+colnames(Prom_zipcode)<-"zip"
+
+Prom_merge<-merge(Prom_zipcode,zip_codes,by="zip")
+head(Prom_merge)
+colnames(Prom_merge)<-c("zip","city","state","latitude","longitude","county_fips")
+Prom_county<-merge(Prom_merge,counties,by='county_fips')
+head(Prom_county)
+
+plot(illinois)
+points(Prom_merge$longitude,Prom_merge$latitude,cex=dfcount)
+
+illinois_df <- fortify(illinois)
+
+
+df1_summary = ddply(
+  Prom_merge,
+  .(zip,county_fips,latitude,longitude),
+  summarize,
+  count=length(zip)
+)
+df1_summary
+require(ggplot2)
+
+map <- ggplot() +
+  geom_path(data = illinois_df, 
+            aes(x = long, y = lat, group = group),
+            color = 'black', fill = 'white', size = .2) +
+geom_point(df1_summary, mapping=aes(longitude, latitude, size=count), fill='pink',shape=21) 
+map_proj<-map +
+  coord_map()
+print(map_proj)
