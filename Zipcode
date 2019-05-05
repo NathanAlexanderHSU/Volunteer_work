@@ -45,4 +45,4 @@ map <- ggplot() +
   
 map_proj<-map +
   coord_map()
-print(map_proj)+labs(y="Latitude",x="longitude")
+print(map_proj)+labs(y="Latitude",x="Longitude")
