@@ -41,7 +41,7 @@ map <- ggplot() +
             color = 'black', fill = 'white', size = .2) +
   geom_point(df1_summary, mapping=aes(longitude, latitude, size=count), fill='pink',shape=21)+
   ggtitle("Queer Prom Attendance 2019") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5,size=24))
   
 map_proj<-map +
   coord_map()
