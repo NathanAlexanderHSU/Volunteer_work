@@ -39,7 +39,10 @@ map <- ggplot() +
   geom_path(data = illinois_df, 
             aes(x = long, y = lat, group = group),
             color = 'black', fill = 'white', size = .2) +
-geom_point(df1_summary, mapping=aes(longitude, latitude, size=count), fill='pink',shape=21) 
+  geom_point(df1_summary, mapping=aes(longitude, latitude, size=count), fill='pink',shape=21)+
+  ggtitle("Queer Prom Attendance 2019") +
+  theme(plot.title = element_text(hjust = 0.5))
+  
 map_proj<-map +
   coord_map()
-print(map_proj)
+print(map_proj)+labs(y="Latitude",x="longitude")
