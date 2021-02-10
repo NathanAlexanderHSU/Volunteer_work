@@ -1,0 +1,91 @@
+hd<-read.csv("C:/Users/Nathan/Desktop/LGBT/homeless/UP 2020 Homeless/UP_homeless_data.csv")
+hd
+head(hd)
+attach(hd)
+dim(hd)
+hd1<-hd[1:20,]
+hd1
+attach(hd1)
+unique(Gender)
+plot(Gender)
+colnames(hd1)
+plot(Age)
+barplot(hd1[,7])
+
+require(ggplot2)
+colnames(hd1)<-c("ID","Gender","Age","Children","Date_First","Date_Last","Days",
+	"Requests","Shelter_Attempt","MV","HUD","Notes")
+
+Gender_position <- c('W','M','Trans','Unknown')
+
+hd1$Gender<-factor(Gender,levels=Gender_position)
+hd1$Shelter_Attempt<-factor(Shelter_Attempt,levels=c('Y','N','Unknown')
+###Days between requests
+ggplot(hd1, aes(x=Days,fill=Gender)) + 
+	geom_histogram(color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	labs(title='Days Between First and Last Request for Assistance', x='Days',y='Individuals')+
+	theme_classic()
+
+dev.new()
+ggplot(hd1, aes(x=Days,fill=Gender)) + 
+	geom_histogram(color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	facet_grid(Age~.)+
+	labs(title='Days Between First and Last Request for Assistance by Age', x='Days',y='Individuals')+
+	theme_classic()
+
+ggplot(hd1, aes(x=Days, fill=Shelter_Attempt)) + 
+	geom_bar(stat="count",color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	facet_grid(rows=vars(Gender))+
+	stat_count(geom = "text", colour = "black", size = 3.5,
+	aes(label = ..count..),position=position_stack(vjust=0.5))+
+	labs(title='Days Between First and Last Request for Assistance by Age and Use Attempt', x='Gender',y='Individuals')+
+	theme_classic()+
+	theme(panel.border = element_rect(color = "black", fill = NA, size = 1))
+###################################
+###################################
+
+###Gender and Age 
+dev.new()
+ggplot(hd1, aes(x=Gender, fill=Gender)) + 
+	geom_bar(stat="count",color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	stat_count(geom = "text", colour = "black", size = 3.5,
+	aes(label = ..count..),position=position_stack(vjust=0.5))+
+	labs(title='Individuals Seeking Shelter or Housing Assistance from UP', x='Gender',y='Individuals')+
+	theme_classic()
+
+dev.new()
+ggplot(hd1, aes(x=Gender, fill=Gender)) + 
+	geom_bar(stat="count",color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	facet_grid(rows=vars(Age))+
+	stat_count(geom = "text", colour = "black", size = 3.5,
+	aes(label = ..count..),position=position_stack(vjust=0.5))+
+	labs(title='Individuals Seeking Shelter or Housing Assistance from UP by Age', x='Gender',y='Individuals')+
+	theme_classic()+
+	theme(panel.border = element_rect(color = "black", fill = NA, size = 1))	
+
+colnames(hd1)
+
+
+###By Gender, Age, and Shelter Use
+dev.new()
+ggplot(hd1, aes(x=Gender, fill=Gender)) + 
+	geom_bar(stat="count",color='black')+
+	scale_color_brewer(palette="Set2")+
+	scale_fill_brewer(palette="Set2")+
+	facet_grid(rows=vars(Age),cols=vars(factor(Shelter_Attempt,levels=c('Y','N','Unknown'))))+
+	stat_count(geom = "text", colour = "black", size = 3.5,
+	aes(label = ..count..),position=position_stack(vjust=0.5))+
+	labs(title='Individuals by Gender, Age, and Shelter Use Attempt', x='Gender',y='Individuals')+
+	theme_classic()+
+	theme(panel.border = element_rect(color = "black", fill = NA, size = 1))	
+
